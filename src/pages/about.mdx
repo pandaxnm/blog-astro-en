@@ -1,0 +1,32 @@
+---
+layout: ../layouts/AboutLayout.astro
+title: "About"
+---
+
+import { Image } from "astro:assets";
+import MeAvatar from "../assets/images/me_avatar.jpg";
+import Socials from "@components/Socials.astro";
+
+# Hello！👋
+
+<div className="flex justify-start">
+  <Image
+    src={MeAvatar}
+    alt="me avatar"
+    width="300"
+    height="300"
+    style="border-radius: 50%;"
+  />
+
+</div>
+
+[//]: # (<Socials centered />)
+
+<p>I'm <span className="text-2xl font-bold">Chaojie Xiong</span>, a backend engineer passionate about cycling, based in Beijing.</p>
+<p>I'm currently with the international department at  [BlueCity](https://www.bluecity.com/), focusing on the backend development of social products.</p>
+<p>I'm skilled in `PHP` and `Golang`.</p>
+<p>I enjoy cycling, traveling, and discovering everything novel and exciting.</p>
+
+[📬 Contact me](mailto:023xcj@gmail.com)
+
+![](@assets/images/about_img.png)

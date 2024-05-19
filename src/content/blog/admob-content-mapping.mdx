@@ -1,0 +1,73 @@
+---
+author: XiongChaoJie
+pubDatetime: 2023-08-02T04:58:53Z
+title: Admob Content Mapping Practice
+slug: admob-content-mapping
+featured: false
+draft: false
+tags:
+  - Admob
+  - Advertisement
+description: Recently, our company's advertising project integrated Admob's Content Mapping. Here is a record of the process.
+---
+
+Recently, our company's advertising project integrated Admob's Content Mapping. Here is a record of the process.
+
+## What is it?
+
+Admob Content Mapping is a type of ad content mapping that allows ad content to be mapped to the content of the application, thereby increasing the click-through rate of ads.
+
+As shown in the figure below, there is a list in our app with an ad in it. Content mapping needs to return the content above and below this ad to Admob, which will match the ad based on this content.
+
+![](@assets/images/202308071224260.png)
+
+## Why use it?
+
+- For **publishers**, content mapping can increase the relevance between ads and users, which helps advertisers increase their bids for your ad resources, thereby increasing revenue potential. This feature also further ensures that advertisers' ads are not placed next to content that is detrimental to their brand image, thus allowing more advertisers to confidently bid for your ad resources.
+
+- For **advertisers**, content mapping can place more relevant ads in mobile applications, thereby improving ad effectiveness, and can also prevent ads from being displayed next to inappropriate content, further ensuring the brand image of advertisers.
+
+- For **users**, content mapping can show more relevant ads to users, thereby improving the user experience.
+
+## How to use it
+
+I will introduce it in several parts according to my business logic:
+
+1. Admob backend settings
+2. Server-side development (ad delivery)
+3. App-side development (URL return)
+4. H5 page development (pages to be crawled)
+
+### Admob Backend Settings
+
+1. **Search Console Configuration**
+Add the domain to be crawled by Admob in [Search Console](https://search.google.com/search-console/welcome?utm_source=wmx&utm_medium=deprecation-pane&utm_content=home) and verify domain ownership.
+2. **Admob Backend Configuration**
+1. Log in to the [Admob backend](https://apps.admob.com)
+2. Click **Settings** -> **Crawler Access**
+3. Add login information:
+- Login information: Fill in the URL and login method (GET, POST) and login parameters (username and password) required for the crawler to log in.
+- Restricted directory or URL: Fill in the URL you return to Admob, which is the URL to be crawled by the crawler.
+
+### Server-side Development
+
+When delivering ads, you need to add the `contentUrl` and `neighboringContentUrls` fields to the returned content. The values of these two fields are the page URLs that need to be returned to Admob for crawling.
+
+**URL and Page Content Precautions:**
+
+1. The URL must match the content seen by the user in the app. If false content is provided, Admob may penalize you.
+2. The URL and page content must not contain user identity information or violate user agreements.
+3. The URL must be unique and cannot be a generic URL. It must be specific to the user's ad request behavior. We can ensure uniqueness by adding parameters to the URL.
+
+### App-side Development
+
+After the client gets the ad content from the server, it calls the `setContentUrl()` and `setNeighboringContentUrls()` methods in the Admob SDK to set the returned URLs.
+
+> Note: `setContentUrl()` can only set one URL, while `setNeighboringContentUrls()` can set multiple URLs.
+
+### H5 Page Development
+
+1. **Login Page**
+Provide a login page that matches the login information configured in the Admob backend. Write the cookie after a successful login.
+2. **Content Page to be Crawled**
+Before displaying the content, first obtain the client cookie for identity verification. Only display the content after successful verification to avoid leaking sensitive information.
